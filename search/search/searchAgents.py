@@ -282,13 +282,13 @@ class CornersProblem(search.SearchProblem):
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
 
-        self.visited = set()
+        self.unseen = set()
 
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print('Warning: no food in corner ' + str(corner))
             if corner != self.startingPosition:
-                self.visited.add(corner)
+                self.unseen.add(corner)
 
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
@@ -300,13 +300,13 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return [self.startingPosition, self.visited]
+        return [self.startingPosition, self.unseen]
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        #state[1] is visited
+        #state[1] is unseen
         return len(state[1]) == 0 #is goal state
 
 
@@ -323,26 +323,26 @@ class CornersProblem(search.SearchProblem):
 
         successor = []
         x,y = state[0]
-        visited = state[1]
+        unseen = state[1]
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            temp = visited.copy() #copies visited so it doesnt change data
+            temp = unseen.copy() #copies unseen so it doesnt change data
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
-                if((nextx,nexty) in visited): #is in corner
+                if((nextx,nexty) in unseen): #is in corner
                     temp.remove((nextx,nexty)) #removes the corner from the set
                 successor.append((((nextx,nexty), temp),action,1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successor
 
-            # temp = visited.copy()
+            # temp = unseen.copy()
             # dx, dy = Actions.directionToVector(action)
             # nextx, nexty = int(x + dx), int(y + dy)
             # if not self.walls[nextx][nexty]:
-            #     if((nextx,nexty) in visited):
+            #     if((nextx,nexty) in unseen):
             #         temp.remove((nextx,nexty))
             #     successor.append((((nextx,nexty), temp),action,1))
 
