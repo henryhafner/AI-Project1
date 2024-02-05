@@ -476,11 +476,18 @@ def foodHeuristic(state, problem):
     
     maximum = 0
     foody = foodGrid.asList()
+    l = len(foody)
 
-    for xy in foody:
-        dist = mazeDistance(position,xy,problem.startingGameState) + len(foody)        
-        if dist > maximum:
-            maximum = dist
+    if l > 8:
+        for xy in foody:
+            dist = abs(xy[0] - position[0]) + abs(xy[1] - position[1]) + l         
+            if dist > maximum:
+                maximum = dist
+    else:
+        for xy in foody:
+            dist = mazeDistance(position,xy,problem.startingGameState) + l        
+            if dist > maximum:
+                maximum = dist
 
     return maximum
 
