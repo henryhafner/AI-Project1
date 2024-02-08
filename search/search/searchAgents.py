@@ -297,14 +297,16 @@ class CornersProblem(search.SearchProblem):
 
     def getStartState(self):
         """
-        Returns the start state (in your state space, not the full Pacman state
+        Returns the start state (in your state space, 
+        not the full Pacman state
         space)
         """
         return [self.startingPosition, self.unseen]
 
     def isGoalState(self, state):
         """
-        Returns whether this search state is a goal state of the problem.
+        Returns whether this search state 
+        is a goal state of the problem.
         """
         #state[1] is unseen
         return len(state[1]) == 0 #is goal state
@@ -314,11 +316,6 @@ class CornersProblem(search.SearchProblem):
         """
         Returns successor states, the actions they require, and a cost of 1.
 
-         As noted in search.py:
-            For a given state, this should return a list of triples, (successor,
-            action, stepCost), where 'successor' is a successor to the current
-            state, 'action' is the action required to get there, and 'stepCost'
-            is the incremental cost of expanding to that successor
         """
 
         successor = []
@@ -338,13 +335,6 @@ class CornersProblem(search.SearchProblem):
         self._expanded += 1 # DO NOT CHANGE
         return successor
 
-            # temp = unseen.copy()
-            # dx, dy = Actions.directionToVector(action)
-            # nextx, nexty = int(x + dx), int(y + dy)
-            # if not self.walls[nextx][nexty]:
-            #     if((nextx,nexty) in unseen):
-            #         temp.remove((nextx,nexty))
-            #     successor.append((((nextx,nexty), temp),action,1))
 
     def getCostOfActions(self, actions):
         """
@@ -373,8 +363,6 @@ def cornersHeuristic(state, problem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
     xy1 = state[0]
     max = 0
 
@@ -383,7 +371,7 @@ def cornersHeuristic(state, problem):
         if dist > max:
             max = dist
 
-    return max # Default to trivial solution
+    return max 
 
 
 class FoodSearchProblem:
@@ -480,12 +468,12 @@ def foodHeuristic(state, problem):
 
     if l > 8:
         for xy in foody:
-            dist = abs(xy[0] - position[0]) + abs(xy[1] - position[1]) + l         
+            dist = abs(xy[0] - position[0]) + abs(xy[1] - position[1])         
             if dist > maximum:
                 maximum = dist
     else:
         for xy in foody:
-            dist = mazeDistance(position,xy,problem.startingGameState) + l        
+            dist = mazeDistance(position,xy,problem.startingGameState)      
             if dist > maximum:
                 maximum = dist
 
@@ -514,13 +502,9 @@ class ClosestDotSearchAgent(SearchAgent):
         gameState.
         """
         # Here are some useful elements of the startState
-        startPosition = gameState.getPacmanPosition()
-        food = gameState.getFood()
-        walls = gameState.getWalls()
-        problem = AnyFoodSearchProblem(gameState)
+        
+        return search.breadthFirstSearch(AnyFoodSearchProblem(gameState))
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -553,10 +537,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         The state is Pacman's position. Fill this in with a goal test that will
         complete the problem definition.
         """
-        x,y = state
-
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        l = self.food.asList()
+        return state in l
 
 def mazeDistance(point1, point2, gameState):
     """
